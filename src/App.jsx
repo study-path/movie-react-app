@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
 import { useDebounce } from "react-use";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 import "./App.css";
 import Search from "./components/Search.jsx";
+import Category from "./components/Category.jsx";
 import Spinner from "./components/Spinner.jsx";
 import MovieCard from "./components/MovieCard.jsx";
 import { updateSearchCount } from "./appwrite.js";
 
+const spanFooter = {
+  display: "flex",
+  columnGap: "20px",
+};
 const API_BASE_URL = "https://api.themoviedb.org/3";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -24,6 +30,7 @@ const App = () => {
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [genre, setGenre] = useState("");
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
@@ -68,6 +75,7 @@ const App = () => {
 
       <div className="wrapper">
         <header>
+          <Category genre={genre} setGenre={setGenre} />
           <img src="./hero.png" alt="Hero Banner" />
           <h1>
             Find <span className="text-gradient">Movies</span> You'll Enjoy
@@ -93,6 +101,18 @@ const App = () => {
 
           {/* {errorMessage && <p className="text-red-500">{errorMessage}</p>} */}
         </section>
+      </div>
+      <div className="footer">
+        <div className="containerFooter">
+          <div style={spanFooter}>
+            <a href="https://facebook.com" rel="noopener" target="_blank">
+              <FaFacebook size={48} />
+            </a>
+            <a href="https://instagram.com" rel="noopener" target="_blank">
+              <FaInstagram size={48} />
+            </a>
+          </div>
+        </div>
       </div>
     </main>
   );
