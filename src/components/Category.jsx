@@ -1,6 +1,7 @@
 import React from "react";
 
-const Category = ({ genre, setGenre }) => {
+const Category = ({ genres, setGenres }) => {
+  console.log("genres", genres);
   return (
     <div className="category">
       <button className="btnCategory">Action</button>
@@ -9,8 +10,12 @@ const Category = ({ genre, setGenre }) => {
       <button className="btnCategory">Crime</button>
       <button className="btnCategory">Action</button>
       <button className="btnCategory">Adventure</button>
-      <button className="btnCategory">Comedy</button>
-      <button className="btnCategory">Crime</button>
+
+      <ul>
+        {/* {genres.map((genre) => (
+          <button key={genre.id} genre={genre.name} />
+        ))} */}
+      </ul>
       {/* <input
           type="text"
           placeholder="Search through thousands of movies"

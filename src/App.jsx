@@ -30,7 +30,7 @@ const App = () => {
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [genre, setGenre] = useState("");
+  const [genres, setGenres] = useState("");
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
@@ -52,7 +52,7 @@ const App = () => {
         setMovieList([]);
         return;
       }
-      console.log("Data results:", data.results);
+      console.log("data:", data.results);
       setMovieList(data.results || []);
 
       // if (query && data.result.length > 0) {
@@ -65,8 +65,39 @@ const App = () => {
       setIsLoading(false);
     }
   };
+  const fetchGenres = async (query = "") => {
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      const endpointCategories = query
+        ? `${API_BASE_URL}/genre/movie/list?language=en'`
+        : `${API_BASE_URL}/genre/movie/list?language=en'`;
+
+      const responseCategories = await fetch(endpointCategories, API_OPTIONS);
+      if (!responseCategories.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+      const dataCategories = await responseCategories.json();
+      if (dataCategories.responseCategories === "False") {
+        setErrorMessage(dataCategories.Error || "Failed to fetch categories");
+        setGenres([]);
+        return;
+      }
+      console.log("Data genres:", dataCategories.genres);
+      setGenres(dataCategories.genres || []);
+
+      // if (query && data.result.length > 0) {
+      //   updateSearchCount(query, data.results[0]);
+      // }
+    } catch (error) {
+      console.log(`Error fetching genres :${error}`);
+      setErrorMessage("Error fetching genres. Please try again later");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    fetchMovies(debouncedSearchTerm);
+    (fetchMovies(debouncedSearchTerm), fetchGenres());
   }, [debouncedSearchTerm]);
 
   return (
@@ -75,7 +106,8 @@ const App = () => {
 
       <div className="wrapper">
         <header>
-          <Category genre={genre} setGenre={setGenre} />
+          <Category genre={genres} setGenre={setGenres} />
+
           <img src="./hero.png" alt="Hero Banner" />
           <h1>
             Find <span className="text-gradient">Movies</span> You'll Enjoy
@@ -112,6 +144,9 @@ const App = () => {
               <FaInstagram size={48} />
             </a>
           </div>
+          <p className="containerFooter">
+            © {new Date().getFullYear()} Movie App
+          </p>
         </div>
       </div>
     </main>

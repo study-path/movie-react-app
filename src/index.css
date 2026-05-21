@@ -83,10 +83,13 @@
     @apply flex justify-center flex-wrap gap-2 py-2 text-2xl font-bold text-white sm:text-3xl;
   }
   .btnCategory {
-    @apply rounded-full bg-violet-700 py-2 my-2 w-[20vh];
+    @apply rounded-full bg-violet-700 py-2 my-2 w-[20vh] hover:bg-violet-900 cursor-pointer;
   }
   .footer {
-    @apply bg-violet-700 py-4 flex justify-center;
+    @apply bg-violet-700 py-4 flex justify-center items-center p-2;
+  }
+  .containerFooter {
+    @apply p-2 font-bold;
   }
   .all-movies {
     @apply space-y-9;
